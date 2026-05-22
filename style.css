@@ -1,0 +1,146 @@
+:root {
+    --bg-main: #0b0f19;
+    --bg-card: #151d30;
+    --neon-green: #00ffa3;
+    --neon-red: #ff3e6c;
+    --text-white: #ffffff;
+    --text-gray: #64748b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace; /* ستايل الهكرز والتداول */
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.dashboard {
+    width: 100%;
+    max-width: 1000px;
+    background: var(--bg-card);
+    border: 1px solid #223150;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+/* هيدر الداشبورد */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #223150;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo h1 {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    color: var(--neon-green);
+    text-shadow: 0 0 10px rgba(0, 255, 163, 0.3);
+}
+
+/* نقطة النبض اللايف */
+.pulse {
+    width: 12px;
+    height: 12px;
+    background: var(--neon-green);
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(0, 255, 163, 0.7);
+    animation: pulseGlow 1.5s infinite;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 163, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 255, 163, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 163, 0); }
+}
+
+#cryptoSearch {
+    background: var(--bg-main);
+    border: 1px solid #223150;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    outline: none;
+    width: 280px;
+    transition: all 0.3s;
+}
+
+#cryptoSearch:focus {
+    border-color: var(--neon-green);
+    box-shadow: 0 0 10px rgba(0, 255, 163, 0.2);
+}
+
+/* الكروت */
+.market-overview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: var(--bg-main);
+    padding: 15px 20px;
+    border-radius: 10px;
+    border-left: 4px solid var(--neon-green);
+}
+
+.stat-card h3 {
+    font-size: 0.85rem;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.status-online { color: var(--neon-green); font-weight: bold; }
+
+/* الجدول الاحترافي */
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th {
+    padding: 15px;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+    border-bottom: 2px solid #223150;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #1e2942;
+    font-size: 1rem;
+}
+
+tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* ألوان الصعود والهبوط للعملات */
+.positive { color: var(--neon-green); font-weight: bold; }
+.negative { color: var(--neon-red); font-weight: bold; }
