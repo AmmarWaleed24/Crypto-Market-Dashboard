@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoPulse // Live Market Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="dashboard">
+        <header>
+            <div class="logo">
+                <span class="pulse"></span>
+                <h1>CryptoPulse</h1>
+            </div>
+            <div class="search-box">
+                <input type="text" id="cryptoSearch" placeholder="Search coin (e.g., BTC, ETH)...">
+            </div>
+        </header>
+
+        <div class="market-overview">
+            <div class="stat-card">
+                <h3>Market Status</h3>
+                <p class="status-online">LIVE / SECURE</p>
+            </div>
+            <div class="stat-card">
+                <h3>Top Gainer Today</h3>
+                <p id="topGainer">Loading...</p>
+            </div>
+        </div>
+
+        <main class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Coin</th>
+                        <th>Price (USD)</th>
+                        <th>24h Change</th>
+                        <th>Market Cap</th>
+                    </tr>
+                </thead>
+                <tbody id="cryptoTableBody">
+                    </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
