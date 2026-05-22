@@ -3,7 +3,7 @@
 A premium, cyber-themed cryptocurrency market dashboard that monitors real-time trading values, 24-hour fluctuations, and overall market capitalization for the top 20 global digital assets. 
 
 ## 🔗 Live Demo
-👉 **[View Live Project Here](https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPO_NAME/)** *(Replace with your actual link)*
+👉 **[View Live Project Here](https://ammarwaleed24.github.io/Crypto-Market-Dashboard/)** *(Replace with your actual link)*
 
 ## ✨ Key Features
 - **Live WebSocket/API Streaming:** Integrated with the highly stable CryptoCompare API to dynamically fetch, map, and render financial data blocks.
@@ -17,5 +17,3 @@ A premium, cyber-themed cryptocurrency market dashboard that monitors real-time 
 - **CSS3:** Custom neon glow properties, keyframe pulsing animations, and grid layout wrappers.
 - **Vanilla JavaScript:** Advanced `async/await` fetch sequences, data mapping methods, and custom analytical filters.
 
-## 📸 Preview
-*(Drop your Crypto Dashboard screenshot here)*
