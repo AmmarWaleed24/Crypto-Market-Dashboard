@@ -40,15 +40,16 @@ function displayData(data) {
     });
 }
 
-// دالة البحث والفلترة الذكية
+// دالة البحث والفلترة الذكية (المعدلة)
 searchInput.addEventListener('input', (e) => {
-    const word = e.target.value.toLowerCase();
+    const word = e.target.value.toLowerCase().trim(); // تحويل كلام المستخدم لحروف صغيرة وحذف المسافات الزائدة
     
-    // فلترة العملات اللي اسمها أو رمزها بيحتوي على الحرف المكتوب
-    const filteredCoins = coinData.filter(coin => 
-        coin.name.toLowerCase().includes(word) || 
-        coin.symbol.toLowerCase().includes(word)
-    );
+    const filteredCoins = coinData.filter(coin => {
+        const coinName = coin.name.toLowerCase();     // تحويل اسم العملة لحروف صغيرة
+        const coinSymbol = coin.symbol.toLowerCase(); // تحويل رمز العملة لحروف صغيرة
+        
+        return coinName.includes(word) || coinSymbol.includes(word);
+    });
     
     displayData(filteredCoins);
 });
