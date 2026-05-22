@@ -2,28 +2,43 @@ const tableBody = document.getElementById('cryptoTableBody');
 const searchInput = document.getElementById('cryptoSearch');
 const topGainerPara = document.getElementById('topGainer');
 
-let coinData = []; // هنشيل فيه الداتا اللي هتيجي عشان نفلتر منها
+let coinData = []; 
 
-// دالة جلب البيانات لايف
+// السيرفر البديل السريع والمستقر (CryptoCompare) عشان نخلص من ليميت السيرفر القديم
+const API_URL = 'https://min-api.cryptocompare.com/data/top/mktcapfull?limit=20&tsym=USD';
+
 async function fetchMarketData() {
     try {
-        // الـ API ده بيجيب أعلى 20 عملة رقمية في السوق حالياً
-        const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false');
-        coinData = await response.json();
+        const response = await fetch(API_URL);
+        const result = await response.json();
+        
+        // هنا بنعيد ترتيب البيانات اللي جاية من السيرفر الجديد لتناسب شكل الجدول بتاعنا
+        coinData = result.Data.map((item, index) => ({
+            market_cap_rank: index + 1,
+            name: item.CoinInfo.FullName,
+            symbol: item.CoinInfo.Name,
+            current_price: item.RAW?.USD?.PRICE || 0,
+            price_change_percentage_24h: item.RAW?.USD?.CHANGEPCT24HOUR || 0,
+            market_cap: item.RAW?.USD?.MKTCAP || 0
+        }));
         
         displayData(coinData);
         updateTopGainer(coinData);
     } catch (error) {
-        tableBody.innerHTML = `<tr><td colspan="5" style="color:red; text-align:center;">API rate limit hit. Wait a minute and refresh!</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="5" style="color:#ff3e6c; text-align:center;">Network error. Please try again later.</td></tr>`;
     }
 }
 
-// دالة عرض البيانات في الجدول
 function displayData(data) {
-    tableBody.innerHTML = ''; // تصفية الجدول أولاً
+    tableBody.innerHTML = ''; 
+    
+    // لو المستخدم كتب اسم عملة مش موجودة في الـ 20 عملة
+    if (data.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="5" style="color:#64748b; text-align:center;">No coins found matching your search.</td></tr>`;
+        return;
+    }
     
     data.forEach(coin => {
-        // تحديد هل النسبة صعود ولا هبوط عشان اللون
         const changeClass = coin.price_change_percentage_24h >= 0 ? 'positive' : 'negative';
         const changeSign = coin.price_change_percentage_24h >= 0 ? '+' : '';
 
@@ -31,7 +46,7 @@ function displayData(data) {
             <tr>
                 <td>${coin.market_cap_rank}</td>
                 <td style="font-weight: bold; color: #fff;">${coin.name} (${coin.symbol.toUpperCase()})</td>
-                <td>$${coin.current_price.toLocaleString()}</td>
+                <td>$${coin.current_price.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                 <td class="${changeClass}">${changeSign}${coin.price_change_percentage_24h.toFixed(2)}%</td>
                 <td>$${coin.market_cap.toLocaleString()}</td>
             </tr>
@@ -40,21 +55,19 @@ function displayData(data) {
     });
 }
 
-// دالة البحث والفلترة الذكية (المعدلة)
+// دالة البحث الذكية والمعدلة (بتعمل لوور كيس ومسافات عشان السيرش يظبط دايماً)
 searchInput.addEventListener('input', (e) => {
-    const word = e.target.value.toLowerCase().trim(); // تحويل كلام المستخدم لحروف صغيرة وحذف المسافات الزائدة
+    const word = e.target.value.toLowerCase().trim();
     
-    const filteredCoins = coinData.filter(coin => {
-        const coinName = coin.name.toLowerCase();     // تحويل اسم العملة لحروف صغيرة
-        const coinSymbol = coin.symbol.toLowerCase(); // تحويل رمز العملة لحروف صغيرة
-        
-        return coinName.includes(word) || coinSymbol.includes(word);
-    });
+    const filteredCoins = coinData.filter(coin => 
+        coin.name.toLowerCase().includes(word) || 
+        coin.symbol.toLowerCase().includes(word)
+    );
     
     displayData(filteredCoins);
 });
 
-// دالة حساب أعلى عملة كسبانة النهاردة
+// دالة حساب أعلى عملة كسبانة في الـ 24 ساعة الأخيرة
 function updateTopGainer(data) {
     if(data.length === 0) return;
     let topCoin = data[0];
@@ -66,8 +79,8 @@ function updateTopGainer(data) {
     topGainerPara.innerHTML = `<span class="positive">${topCoin.name} (+${topCoin.price_change_percentage_24h.toFixed(2)}%)</span>`;
 }
 
-// تشغيل السيستم أول ما الصفحة تفتح
+// تشغيل السيستم فوراً أول ما الصفحة تفتح
 fetchMarketData();
 
-// تحديث تلقائي للداتا كل 60 ثانية من غير ما المستخدم يعمل ريفريش
+// تحديث تلقائي في الخلفية كل 60 ثانية بدون ما يحتاج ريفريش من المستخدم
 setInterval(fetchMarketData, 60000);
